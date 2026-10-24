@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<HTML>
+  <HEAD>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
+    
+    
+    <STYLE>
+      <!--
+      body {font-variant-ligatures: none;}
+
+      a {text-decoration:none;}
+      
+      //-->
+    </STYLE>
+    
+    
+    <TITLE>Bangla phonetic input</TITLE>
+  </HEAD>
+  
+  <BODY LINK="blue" ALINK="blue" VLINK="blue", bgcolor="white">
+    <DIV>
+
+      See <a href="./README">README</a> for instructions and <a href="./LICENSE">LICENSE</a> for copyright. Choose a mode:
+      <input type="radio" name="mode" id="f" value="forward" checked>English to Bengali</input>
+      <input type="radio" name="mode" id="b" value="backward">Bengali to English</input>
+
+      <BR><BR>
+      
+      
+      <textarea id="first" style="width:45vw;height:85vh" onkeyup="sync()"></textarea>
+      <textarea id="second" style="width:45vw;height:85vh" onkeyup="sync()"></textarea>
+
+      <script>
+
+	const box=document.getElementById("first");
+	const cox=document.getElementById("second");
+	const fmode=document.getElementById("f");
+	const bmode=document.getElementById("b");
+
+	function bconvert(text){
+
+	    ans=text;
+
+	    
+ans=ans.replace(/ব়/g,"র").replace(/ড়/g,"ড়").replace(/ঢ়/g,"ঢ়").replace(/য়/g,"য়");
+	    
+	    ans=ans.replace(/॥/g,"..").replace(/।/g,".").replace(/ৎ/g,"ত্").replace(/অ্যা/g,"aaY").replace(/এ্যা/g,"eeY");
+
+	    ans=ans.replace(/০/g,"0").replace(/১/g,"1").replace(/২/g,"2").replace(/৩/g,"3").replace(/৪/g,"4").replace(/৫/g,"5").replace(/৬/g,"6").replace(/৭/g,"7").replace(/৮/g,"8").replace(/৯/g,"9");
+
+	    ans=ans.replace(/ঁ/g,"^").replace(/ং/g,"ng").replace(/ঃ/g,"H");
+
+	    ans=ans.replace(/[্][ |,|.|;|!|\-|\?|\n|)]/g,function(match){return "্্".concat(match[1]);});
+
+	    ans=ans.replace(/া/g,"্আ").replace(/ি/g,"্ই").replace(/ী/g,"্ঈ").replace(/ু/g,"্উ").replace(/ূ/g,"্ঊ").replace(/ৃ/g,"্ঋ").replace(/ৄ/g,"্ৠ").replace(/ে/g,"্এ").replace(/ৈ/g,"্ঐ").replace(/ো/g,"্ও").replace(/ৌ/g,"্ঔ").replace(/ওই/g,"ও#ই");	    
+
+	    ans=ans.replace(/ক/g,"kZ").replace(/খ/g,"khZ").replace(/গ/g,"gZ").replace(/ঘ/g,"ghZ").replace(/ঙ/g,"NgZ").replace(/চ/g,"chZ").replace(/ছ/g,"chhZ").replace(/জ/g,"jZ").replace(/ঝ/g,"jhZ").replace(/ঞ/g,"NjZ").replace(/ট/g,"TZ").replace(/ঠ/g,"ThZ").replace(/ড/g,"DZ").replace(/ঢ/g,"DhZ").replace(/ণ/g,"NZ").replace(/ত/g,"tZ").replace(/থ/g,"thZ").replace(/দ/g,"dZ").replace(/ধ/g,"dhZ").replace(/ন/g,"nZ").replace(/প/g,"pZ").replace(/ফ/g,"phZ").replace(/ব/g,"bZ").replace(/ভ/g,"bhZ").replace(/ম/g,"mZ").replace(/য/g,"JZ").replace(/র/g,"rZ").replace(/ল/g,"lZ").replace(/শ/g,"shZ").replace(/ষ/g,"ShZ").replace(/স/g,"sZ").replace(/হ/g,"hZ").replace(/ড়/g,"RZ").replace(/ঢ়/g,"RhZ").replace(/য়/g,"yZ");
+
+	    ans=ans.replace(/Z্/g,"").replace(/Z/g,"অ").replace(/[অ][ |,|.|;|!|\-|\?|\n|)]/g,function(match){return match[1];});
+
+	    ans=ans.replace(/এঽ/g,"ee").replace(/ওঽ/g,"oo").replace(/অ/g,"a").replace(/আ/g,"aa").replace(/ই/g,"i").replace(/ঈ/g,"ii").replace(/উ/g,"u").replace(/ঊ/g,"uu").replace(/ঋ/g,"wri").replace(/ৠ/g,"wrii").replace(/এ/g,"e").replace(/ঐ/g,"oi").replace(/ও/g,"o").replace(/ঔ/g,"ou");
+	    
+	    ans=ans.replace(/[b-df-hj-np-tv-z][J]/g,function(match){return match[0].concat("Y");});
+	    ans=ans.replace(/[b-df-hj-np-tv-z][b]/g,function(match){return match[0].concat("w");});
+	    
+	    ans=ans.replace(/Ngg[ |,|.|;|!|\-|\?|\n|)]/g,function(match){return "Ngga".concat(match[3]);});
+	    ans=ans.replace(/Ngk/g,"nk").replace(/Ngg/g,"ng").replace(/Njch/g,"nch").replace(/Njj/g,"nj").replace(/jNj/g,"gy");
+
+
+	    
+	    
+	    return ans;
+	}
+	
+	function fconvert(text){
+
+	    ans=text;
+
+	    ans=ans.replace(/q|z/ig,"").replace(/B/g,"b").replace(/---/g,"—").replace(/--/g,"–");
+	    ans=ans.replace(/W|E|O|P|F|G|K|L|X|C|V/g,function(match){return match.toLowerCase();}).replace(/x/g,"kS");
+	    ans=ans.replace(/aaY/g,"অ্যা").replace(/eeY/g,"এ্যা");
+	    ans=ans.replace(/aa|ii|uu/g,function(match){return match[0].toUpperCase();});
+
+	    ans=ans.replace(/\|/g,"॥").replace(/\.\./g,"॥").replace(/\./g,"।");
+	    ans=ans.replace(/~/g,"ঁ").replace(/\^/g,"ঁ").replace(/M/g,"ং").replace(/ng/g,"ং").replace(/`/g,"্").replace(/H/g,"ঃ");
+
+	    ans=ans.replace(/wri/g,"ঋ").replace(/wrI/g,"ৠ").replace(/oi/g,"ঐ").replace(/ou/g,"ঔ").replace(/ee/g,"এঽ").replace(/oo/g,"ওঽ");
+	    ans=ans.replace(/a/g,"অ").replace(/A/g,"আ").replace(/i/g,"ই").replace(/I/g,"ঈ").replace(/u/g,"উ").replace(/U/g,"ঊ").replace(/e/g,"এ").replace(/o/g,"ও");
+
+	    ans=ans.replace(/Ng/g,"ঙ্").replace(/Nj/g,"ঞ্");
+	    ans=ans.replace(/rY/g,"র‍্য্").replace(/ry/g,"র‍্য্");
+	    ans=ans.replace(/kh/g,"খ্").replace(/gh/g,"ঘ্").replace(/chh/g,"ছ্").replace(/jh/g,"ঝ্").replace(/Th/g,"ঠ্").replace(/Dh/g,"ঢ্").replace(/th/g,"থ্").replace(/dh/g,"ধ্").replace(/ph/g,"ফ্").replace(/bh/g,"ভ্").replace(/wh/g,"ভ্").replace(/sh/g,"শ্").replace(/Sh/g,"ষ্").replace(/Rh/g,"ঢ়্");
+            ans=ans.replace(/Br/g,"ৰ‍্র্").replace(/By/g,"ৰ‍্য্").replace(/BY/g,"ৰ‍্য্").replace(/BJ/g,"ৰ‍্য্");
+	    ans=ans.replace(/B/g,"ৰ্"); 	
+	    ans=ans.replace(/k/g,"ক্").replace(/g/g,"গ্").replace(/ch/g,"চ্").replace(/c/g,"").replace(/j/g,"জ্").replace(/T/g,"ট্").replace(/D/g,"ড্").replace(/N/g,"ণ্").replace(/t/g,"ত্").replace(/d/g,"দ্").replace(/n/g,"ন্").replace(/p/g,"প্").replace(/f/g,"ফ্").replace(/b/g,"ব্").replace(/w/g,"ব্").replace(/v/g,"ভ্").replace(/m/g,"ম্").replace(/J/g,"য্").replace(/Y/g,"য্").replace(/r/g,"র্").replace(/l/g,"ল্").replace(/S/g,"ষ্").replace(/s/g,"স্").replace(/h/g,"হ্").replace(/R/g,"ড়্").replace(/y/g,"য়্");
+
+	    ans=ans.replace(/গ্য়্/g,"জ্ঞ্").replace(/্য়্/g,"্য্");
+	    ans=ans.replace(/[ন][্][ক|খ|ঘ]/g,function(match){return "ঙ্".concat(match[2]);}); 
+	    ans=ans.replace(/[ন][্][চ|ছ|জ|ঝ]/g,function(match){return "ঞ্".concat(match[2]);}); 
+	    ans=ans.replace(/[ন][্][ঠ|ড|ঢ]/g,function(match){return "ণ্".concat(match[2]);});
+	    ans=ans.replace(/ণ্দ/g,"ণ্ড").replace(/ষ্ন/g,"ষ্ণ");
+	    
+	    ans=ans.replace(/[ং][অ|আ|ই|ঈ|উ|ঊ|ঋ|ৠ|এ|ঐ|ও|ঔ]/g,function(match){return "ঙ্গ্".concat(match[1]);});
+	    
+	    ans=ans.replace(/্অ/g,"").replace(/্আ/g,"া").replace(/্ই/g,"ি").replace(/্ঈ/g,"ী").replace(/্উ/g,"ু").replace(/্ঊ/g,"ূ").replace(/্ঋ/g,"ৃ").replace(/্ৠ/g,"ৄ").replace(/্এ/g,"ে").replace(/্ঐ/g,"ৈ").replace(/্ও/g,"ো").replace(/্ঔ/g,"ৌ");
+	    
+ans=ans.replace(/[্][ |,|।|;|!|\-|\?|॥|\n|#|\$|\'|\"|)]/g,function(match){return match[1];});
+ans=ans.replace(/[ত][্][^তথদধনরবযম]/g,function(match){return "ৎ".concat(match[2]);});
+
+	    ans=ans.replace(/0/g,"০").replace(/1/g,"১").replace(/2/g,"২").replace(/3/g,"৩").replace(/4/g,"৪").replace(/5/g,"৫").replace(/6/g,"৬").replace(/7/g,"৭").replace(/8/g,"৮").replace(/9/g,"৯");
+
+	    ans=ans.replace(/#|\$/g,"");
+	    
+	    return ans;
+	    
+	}
+	
+	function sync(){
+
+	    if (fmode.checked){
+		cox.scrollTop=cox.scrollHeight+box.scrollTop-box.scrollHeight;
+		cox.value=fconvert(box.value);
+	    }
+
+	    if (bmode.checked){
+		box.scrollTop=box.scrollHeight+cox.scrollTop-cox.scrollHeight;
+		box.value=bconvert(cox.value);
+	    }
+	    
+	}
+	
+      </script>
+
+    </DIV>
+  </BODY>
+</HTML>
+    

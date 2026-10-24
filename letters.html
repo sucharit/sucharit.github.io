@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=0.7">
+
+<style>
+<!--
+
+body {
+ font-size: 20px;
+ -webkit-text-size-adjust: none;
+ -moz-text-size-adjust: none;
+ -ms-text-size-adjust: none;
+ font-variant-ligatures: none; 
+ background-color:white;
+height:100%;
+width:100%;
+margin:0px;
+padding:0px;
+}
+
+html{
+height:100%;
+width:100%;
+margin:0px;
+padding:0px;
+}
+
+a {text-decoration:none; color: blue}
+a:active {color:blue}
+a:visited {color:blue}
+
+div{
+width:100%;
+margin:0px;
+padding:0px;
+}
+
+.box{
+height:100%;
+display:flex;
+flex-flow:column;
+}
+
+.header{
+flex: 0 1 auto;
+font-size: 50px;
+}
+
+.content{
+flex: 1 1 auto;
+font-size: 70px;
+display:flex;
+justify-content:center;
+align-items:center;
+touch-action:manipulation;
+}
+
+//-->
+</style>
+
+
+<title>Bengali letters</title>
+</head>
+
+<body onload="javascript:nextletter()">
+  
+<div class="box">
+
+  <div class="header" style="background-color:azure;" id="timer"></div>
+  
+  <div class="header" style="background-color:azure;">Letters:
+    <a id="size1" href="javascript:void(0)" style="background-color:yellow" onclick="word_size(1)">1</a> 
+    <a id="size2" href="javascript:void(0)" style="background-color:azure" onclick="word_size(2)">2</a> 
+    <a id="size3" href="javascript:void(0)" style="background-color:azure" onclick="word_size(3)">3+</a> 
+  </div>
+
+  <div class="header" style="background-color:azure;">Words:
+    <a id="sent1" href="javascript:void(0)" style="background-color:yellow" onclick="sentence_size(1)">1</a> 
+    <a id="sent2" href="javascript:void(0)" style="background-color:azure" onclick="sentence_size(2)">2+</a> 
+  </div>
+  
+  <div class="header" style="background-color:azure;">Juktakkhor:
+    <a id="jukt1" href="javascript:void(0)" style="background-color:azure" onclick="juktakkhor(1)">Yes</a> 
+    <a id="jukt0" href="javascript:void(0)" style="background-color:yellow" onclick="juktakkhor(0)">No</a>    
+  </div>
+
+  <div class="header" style="background-color:azure;">Real words:
+    <a id="real1" href="javascript:void(0)" style="background-color:azure" onclick="reality(1)">Yes</a> 
+    <a id="real0" href="javascript:void(0)" style="background-color:yellow" onclick="reality(0)">No</a>    
+  </div>
+
+  
+<div class="content" id="main" onclick="nextletter()"></div>
+
+
+</div>
+
+<script src="BengaliSorted.js"></script>
+
+<script language="javascript">
+    <!--
+  var num_done=0;
+  var time_start=Date.now();
+  var word_length=1;
+  var sentence_length=1;
+  var jukt_status=0;
+  var reality_status=0;
+
+  function nextletter()
+  {
+      timer_text="Average time: ";
+      if(num_done==0)
+      {timer_text+="--";}
+      else
+      {
+	  avg=Math.floor((Date.now()-time_start)/num_done);
+	  timer_text+=avg;
+	  timer_text+="ms";
+      }
+      document.getElementById("timer").innerHTML=timer_text;
+      
+
+      num_done+=1;
+      
+      if(sentence_length<2)
+      {temp_sent_length=sentence_length;}
+      else
+      {temp_sent_length=Math.floor(Math.random()*3)+2;}
+
+      rand="";
+      for(j=0;j<temp_sent_length;j++)
+      {
+	  
+	  if(word_length<3)
+	  {temp_length=word_length;}
+	  else
+	  {temp_length=Math.floor(Math.random()*3)+3;}
+
+	  if(j>0){rand+=" ";}
+
+	  if(reality_status==0)
+	  {
+	      rand+=first_letter();
+	      for(i=1;i<temp_length;i++){rand+=next_letter();}
+	  }
+	  else
+	  {
+	      rand_index=Math.floor(Math.random()*num_words[jukt_status][word_length])
+	      rand+=words[jukt_status][word_length][rand_index];
+	  }
+      }
+
+      document.getElementById("main").innerHTML=rand;
+  }
+  
+  function juktakkhor(a)
+  {
+      jukt_status=a;
+      document.getElementById("jukt0").style.backgroundColor="azure";
+      document.getElementById("jukt1").style.backgroundColor="azure";
+      document.getElementById("jukt"+String(a)).style.backgroundColor="yellow";
+
+      num_done=0;
+      time_start=Date.now();
+      nextletter();
+  }
+
+  function reality(a)
+  {
+      reality_status=a;
+      document.getElementById("real0").style.backgroundColor="azure";
+      document.getElementById("real1").style.backgroundColor="azure";
+      document.getElementById("real"+String(a)).style.backgroundColor="yellow";
+
+      num_done=0;
+      time_start=Date.now();
+      nextletter();
+  }
+  
+  function word_size(a)
+  {
+      word_length=a;
+      document.getElementById("size1").style.backgroundColor="azure";
+      document.getElementById("size2").style.backgroundColor="azure";
+      document.getElementById("size3").style.backgroundColor="azure";
+      document.getElementById("size"+String(a)).style.backgroundColor="yellow";
+
+      num_done=0;
+      time_start=Date.now();
+      nextletter();
+  }
+
+  function sentence_size(a)
+  {
+      sentence_length=a;
+      document.getElementById("sent1").style.backgroundColor="azure";
+      document.getElementById("sent2").style.backgroundColor="azure";
+      document.getElementById("sent"+String(a)).style.backgroundColor="yellow";
+
+      num_done=0;
+      time_start=Date.now();
+      nextletter();
+  }
+
+
+
+  const vowels=["অ", "আ", "ই", "ঈ", "উ"," ঊ", "ঋ", "এ", "ঐ", "ও", "ঔ"];
+  const consonants=["ক","খ","গ","ঘ","ঙ","চ","ছ","জ","ঝ","ঞ","ট","ঠ","ড","ঢ","ণ","ত","থ","দ","ধ","ন","প","ফ","ব","ভ","ম","য","র","ল","শ","স","ষ","হ","ড়","ঢ়","য়"];
+  const vowel_symbols=["","া","ি","ী","ু","ূ","ৃ","ে","ৈ","ো","ৌ"];
+
+  const ityadi=["ং","ঃ","ঁ"];
+  
+  /*list from https://bn.wikibooks.org/wiki/বাংলা_যুক্তাক্ষর */
+  const first_jukta=["ক্য","ক্র","ক্ল","ক্ষ","খ্য","খ্র","গ্য","গ্র","গ্র্য","গ্ল","ঘ্য","ঘ্র","চ্য","জ্ঞ","জ্ব","জ্য","জ্র","ট্য","ট্র","ড্য","ড্র","ঢ্য","ঢ্র","ত্ব","ত্য","ত্র","ত্র্য","থ্য","থ্র","দ্ব","দ্য","দ্র","ধ্ব","ধ্য","ধ্র","ন্য","প্য","প্র","প্র্য","প্ল","ফ্র","ফ্ল","ব্য","ব্র","ব্ল","ভ্ব","ভ্য","ভ্র","ম্য","ম্র","ম্ল","য্য","ল্য","শ্ব","শ্য","শ্র","শ্ল","স্ক","স্খ","স্ট","স্ট্র","স্ত","স্ত্য","স্ত্র","স্থ","স্থ্য","স্ন","স্ন্য","স্প","স্প্র","স্ফ","স্ব","স্ম","স্য","স্র","স্ল","হ্য","হ্র"];
+  const next_jukta=["ক্ক","ক্ট","ক্ট্র","ক্ত","ক্ন","ক্ব","ক্ম","ক্য","ক্র","ক্ল","ক্ষ","ক্ষ্ণ","ক্ষ্ম","ক্ষ্য","ক্স","খ্য","খ্র","গ্ধ","গ্ধ্য","গ্ন","গ্ন্য","গ্ব","গ্ম","গ্য","গ্র","গ্র্য","গ্ল","ঘ্ন","ঘ্য","ঘ্র","ঙ্ক","ঙ্ক্য","ঙ্খ","ঙ্খ্য","ঙ্গ","ঙ্গ্য","ঙ্ঘ","ঙ্ঘ্য","ঙ্ম","চ্চ","চ্ছ","চ্ছ্ব","চ্ছ্র","চ্ঞ","চ্ব","চ্য","জ্জ","জ্জ্ব","জ্ঝ","জ্ঞ","জ্ব","জ্য","জ্র","ঞ্চ","ঞ্ছ","ঞ্জ","ঞ্ঝ","ট্ট","ট্ব","ট্ম","ট্য","ট্র","ড্ড","ড্ব","ড্ম","ড্য","ড্র","ড়্গ","ঢ্য","ঢ্র","ণ্ট","ণ্ঠ","ণ্ঠ্য","ণ্ড","ণ্ড্য","ণ্ঢ","ণ্ণ","ণ্ব","ণ্ম","ণ্য","ৎক","ৎখ","ত্ত","ত্ত্ব","ত্ত্য","ত্থ","ত্ন","ৎপ","ত্ব","ত্ম","ত্ম্য","ত্য","ত্র","ত্র্য","ৎল","ৎস","থ্ব","থ্য","থ্র","দ্গ","দ্ঘ","দ্দ","দ্দ্ব","দ্ধ","দ্ব","দ্ভ","দ্ভ্র","দ্ম","দ্য","দ্র","দ্র্য","ধ্ন","ধ্ব","ধ্ম","ধ্য","ধ্র","ন্ট","ন্ট্র","ন্ঠ","ন্ড","ন্ড্র","ন্ত","ন্ত্ব","ন্ত্য","ন্ত্র","ন্ত্র্য","ন্থ","ন্থ্র","ন্দ","ন্দ্য","ন্দ্ব","ন্দ্র","ন্ধ","ন্ধ্য","ন্ধ্র","ন্ন","ন্ব","ন্ম","ন্য","প্ট","প্ত","প্ন","প্প","প্য","প্র","প্র্য","প্ল","প্স","ফ্র","ফ্ল","ব্জ","ব্দ","ব্ধ","ব্ব","ব্য","ব্র","ব্ল","ভ্ব","ভ্য","ভ্র","ভ্ল","ম্ন","ম্প","ম্প্র","ম্ফ","ম্ব","ম্ব্র","ম্ভ","ম্ভ্র","ম্ম","ম্য","ম্র","ম্ল","য্য","র্ক","র্ক্য","র্গ","র্গ্য","র্ঘ্য","র্ঙ্গ","র্চ্য","র্জ্য","র্জ্জ","র্জ্ঞ","র্ণ্য","র্ত্য","র্থ্য","র্ব্য","র্ম্য","র্শ্য","র্ষ্য","র্হ্য","র্খ","র্গ","র্গ্র","র্ঘ","র্চ","র্ছ","র্জ","র্ঝ","র্ট","র্ড","র্ণ","র্ত","র্ত্ম","র্ত্র","র্থ","র্দ","র্দ্ব","র্দ্র","র্ধ","র্ধ্ব","র্ন","র্প","র্ফ","র্ব","র্ভ","র্ম","র্য","র্ল","র্শ","র্শ্ব","র্ষ","র্ষ্ট","র্ষ্ণ","র্ষ্ণ্য","র্স","র্হ","র্হ্য","র্ঢ্য","ল্ক","ল্ক্য","ল্গ","ল্ট","ল্ড","ল্প","ল্ফ","ল্ব","ল্ভ","ল্ম","ল্য","ল্ল","শ্চ","শ্ছ","শ্ন","শ্ব","শ্ম","শ্য","শ্র","শ্ল","ষ্ক","ষ্ক্ব","ষ্ক্র","ষ্ট","ষ্ট্য","ষ্ট্র","ষ্ঠ","ষ্ঠ্য","ষ্ণ","ষ্ণ্ব","ষ্প","ষ্প্র","ষ্ফ","ষ্ব","ষ্ম","ষ্য","স্ক","স্ক্র","স্খ","স্ট","স্ট্র","স্ত","স্ত্ব","স্ত্য","স্ত্র","স্থ","স্থ্য","স্ন","স্ন্য","স্প","স্প্র",,"স্ফ","স্ব","স্ম","স্য","স্র","স্ল","হ্ণ","হ্ন","হ্ব","হ্ম","হ্য","হ্র","হ্ল"]
+
+  /*got word list from https://github.com/MinhasKamal/BengaliDictionary */
+
+  
+  function first_letter()
+  {
+      mode=Math.random();
+      if(mode<0.1)
+      {
+	  bar="";
+	  foo=vowels[Math.floor(Math.random()*vowels.length)];
+      }
+      else
+      {
+	  foo=vowel_symbols[Math.floor(Math.random()*vowel_symbols.length)];
+	  
+	  if(jukt_status==1 & mode>0.9){
+	      bar=first_jukta[Math.floor(Math.random()*first_jukta.length)];
+	  }
+	  else{
+	      bar=consonants[Math.floor(Math.random()*consonants.length)];
+	  }
+      }
+
+      extra=Math.random();
+      if(extra<0.05)
+      {
+	  tail=ityadi[Math.floor(Math.random()*ityadi.length)];
+      }
+      else
+      {
+	  tail=""
+      }
+      
+      return bar+foo+tail;
+      
+  }
+
+  function next_letter()
+  {
+
+      mode=Math.random();
+
+      foo=vowel_symbols[Math.floor(Math.random()*vowel_symbols.length)];      
+      if(jukt_status==1 & mode>0.6){
+	  bar=next_jukta[Math.floor(Math.random()*next_jukta.length)];
+      }
+      else{
+	  bar=consonants[Math.floor(Math.random()*consonants.length)];
+      }
+
+      
+      extra=Math.random();
+      if(extra<0.05)
+      {
+	  tail=ityadi[Math.floor(Math.random()*ityadi.length)];
+      }
+      else
+      {
+	  tail=""
+      }
+
+      return bar+foo+tail;
+      
+  }
+
+  
+  //-->
+</script>
+
+
+
+</body></html>
