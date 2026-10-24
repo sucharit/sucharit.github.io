@@ -2,6 +2,12 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 
 
+<!--
+  Bengali phonetic typing.
+  Copyright (C) 2021 Sucharit Sarkar.
+  This program is free software, released under the GNU General Public License, version 3
+  (https://www.gnu.org/licenses/gpl-3.0.html).
+-->
 <HTML>
   <HEAD>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -24,15 +30,52 @@
   <BODY LINK="blue" ALINK="blue" VLINK="blue", bgcolor="white">
     <DIV>
 
-      See <a href="./README">README</a> for instructions and <a href="./LICENSE">LICENSE</a> for copyright. Choose a mode:
-      <input type="radio" name="mode" id="f" value="forward" checked>English to Bengali</input>
-      <input type="radio" name="mode" id="b" value="backward">Bengali to English</input>
+      <details><summary><strong>How to type</strong></summary>
+      <p>The keymapping is fairly natural (with some additional shortcuts). The following are some of the features.</p>
+      <ul>
+        <li>অ is represented by a, not o. Therefore, আ is represented by aa or A, and ও is represented by o.</li>
+        <li>For the longer sounds, type twice or use capital letters, i.e., aa or A for আ, ii or I for ঈ, uu or U for ঊ, and so on.</li>
+        <li>ঋ is represented by wri.</li>
+        <li>For অ্যা and এ্যা type aaY and eeY.</li>
+        <li>For the aspirated sounds, use h, eg. kh for খ, gh for ঘ, etc.</li>
+        <li>For the harder/longer sounds, type in capitals, e.g. T for ট, Th for ঠ, D for ড, N for ণ, R for ড়, J for য.</li>
+        <li>ঙ is Ng, ঞ is Nj.</li>
+        <li>ng is encoded as ং if followed by a consonant, otherwise as ঙ্গ.</li>
+        <li>শ, স and ষ are sh, s and S (or Sh), respectively.</li>
+        <li>For ্ use `.</li>
+        <li>ব is encoded both as b and as w; y encodes য়, except when it follows a consonant, when it (as well as Y) encodes য-ফলা. The only difference between them is the behavior when following গ: gy is জ্ঞ and gY is গ্য.</li>
+        <li>For juktakkhors, type the consecutive consonants. For example, ndr for ন্দ্র, kt for ক্ত, shr for শ্র.  Therefore, ব-ফলা is w, র-ফলা is r, য-ফলা is y.</li>
+        <li>Some juktakkhors have shortcuts (like gy for জ্ঞ and গ্য use gY). Some extra ones are nj for ঞ্জ, x for ক্ষ (the usual method to enter ক্ষ would have kS). I will leave the rest to you to discover for yourself.</li>
+        <li>ঃ is represented by H; for ঁ, use ~ or ^.</li>
+        <li>It is often useful to disrupt the phonetic transliteration; use # or $. For example, to type করতে, type kar#te; if you type karte, you get কর্তে; you may also type karate to get করতে, although that is a bit unnatural. This is also needed to write certain combinations. For instance, to write ওই, type o#i, since oi converts to ঐ.</li>
+        <li>To type some strange juktakkhors, you need to type the hasanta explicitly. For example, for ক্হ, type k`#h, since kh is খ.</li>
+      </ul>
+      <p>Some examples.</p>
+      <ul>
+        <li>বাংলা bAnglA or baanglaa</li>
+        <li>রবীন্দ্র rabIndra</li>
+        <li>তৎক্ষণাৎ tat`xaNAt`</li>
+        <li>নমোঽস্তুতে namoostute</li>
+        <li>হ্যাঁ hyA^</li>
+        <li>তত্ত্বালোচনা tattwAlochanA</li>
+        <li>জিজ্ঞাসা jigyAsA</li>
+        <li>ভাগ্য bhAgYa</li>
+        <li>পরেদ্যবি paredyabi</li>
+        <li>সন্ধ্যার্ঘ্য sandhyArghya</li>
+        <li>কলকাতা kal#kAtA</li>
+      </ul>
+      <p>Copyright (C) 2021 Sucharit Sarkar. This code is covered under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPLv3</a>. In summary, you may inspect, modify, and redistribute the code at your free will, as long as you include your source files and preserve the original copyright notices.</p>
+      </details>
 
-      <BR><BR>
+      Choose a mode:
+      <input type="radio" name="mode" id="f" value="forward" checked onchange="setPlaceholders()">English to Bengali</input>
+      <input type="radio" name="mode" id="b" value="backward" onchange="setPlaceholders()">Bengali to English</input>
+
+      <BR>
       
       
-      <textarea id="first" style="width:45vw;height:85vh" onkeyup="sync()"></textarea>
-      <textarea id="second" style="width:45vw;height:85vh" onkeyup="sync()"></textarea>
+      <textarea id="first" aria-label="English" style="width:45vw;height:85vh" onkeyup="sync()"></textarea>
+      <textarea id="second" aria-label="Bengali" style="width:45vw;height:85vh" onkeyup="sync()"></textarea>
 
       <script>
 
@@ -119,6 +162,15 @@ ans=ans.replace(/[ত][্][^তথদধনরবযম]/g,function(match){retu
 	    
 	}
 	
+	function setPlaceholders(){
+
+	    box.placeholder=fmode.checked ? "English: type here" : "English";
+	    cox.placeholder=fmode.checked ? "Bengali" : "Bengali: type here";
+
+	}
+
+	setPlaceholders();
+
 	function sync(){
 
 	    if (fmode.checked){
